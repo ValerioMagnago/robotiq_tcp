@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
  
-  <xacro:include filename="$(find robotiq_epick_gripper_visualization)/urdf/robotiq_epick/robotiq_epick.gazebo.xacro"/>  
+  <xacro:include filename="$(find robotiq_epick_visualization)/urdf/robotiq_epick.gazebo.xacro"/>  
 
   <xacro:property name="joint_lower_limit" value="0.0" />
   <xacro:property name="joint_upper_limit" value="0.055" />
@@ -16,7 +16,7 @@
       <visual>
         <origin xyz="0 0 0.095" rpy="0 0 0"/>
         <geometry>          
-          <mesh filename="package://robotiq_epick_gripper_visualization/meshes/visual/robotiq_epick.dae" scale="0.001 0.001 0.001"/>          
+          <mesh filename="package://robotiq_epick_visualization/meshes/visual/robotiq_epick.dae" scale="0.001 0.001 0.001"/>          
         </geometry>
         <material name="">
           <color rgba="1 1 1 1"/>

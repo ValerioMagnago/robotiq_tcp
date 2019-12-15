@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>epick_gripper_visualization</name>
+  <name>robotiq_epick_visualization</name>
   <version>0.1.0</version>
   <description>Robotiq epick description package</description>
   <license>MIT</license>  
