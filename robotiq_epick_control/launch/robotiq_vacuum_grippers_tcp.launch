@@ -1,0 +1,12 @@
+<launch>
+  <arg name="gripper_name" default="epick" />
+  <arg name="activate" default="True" />
+  
+<remap from="gripper_server/output" to="RobotiqVacuumGrippersRobotOutput" />
+
+  <node pkg="robotiq_vacuum_grippers_control" type="robotiq_vacuum_grippers_tcp_node" name="gripper_server" output="screen">
+      <param name="activate" type="bool" value="$(arg activate)" />
+            
+      <remap from="input" to="/$(arg gripper_name)/input" />
+    </node>
+</launch>
