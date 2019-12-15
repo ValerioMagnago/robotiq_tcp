@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>epick_gripper_visualization</name>
+  <version>0.1.0</version>
+  <description>Robotiq epick description package</description>
+  <license>MIT</license>  
+  <author email="valerio.magnago@gmail.com">Valerio Magnago</author>
+  <maintainer email="valerio.magnago@gmail.com">Valerio Magnago</maintainer>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>urdf</exec_depend>
+
+</package>

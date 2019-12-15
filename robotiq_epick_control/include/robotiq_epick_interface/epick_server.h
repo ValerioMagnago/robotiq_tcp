@@ -13,12 +13,23 @@
 
 #include "robotiq_epick_interface/epick_gripper_interface.h"
 
+#include <dynamic_reconfigure/server.h>
+#include <robotiq_epick_control/EpickConfig.h>
 
 namespace epick_interface
 {
 
   class EpickServer
   {
+
+  struct ActionParam{
+    float max_press_kpa;
+    float action_timeout_sec;
+    float min_press_kpa;
+    bool block;
+    ros::Duration timeout;
+  };
+
   public: EpickServer(ros::NodeHandle& nh);
 
   public: virtual ~EpickServer();
@@ -48,6 +59,8 @@ namespace epick_interface
   private: std::string srv1_topic_name_;
   private: std::string srv2_topic_name_;
 
+  private: ActionParam grasp_params_;
+  private: ActionParam drop_params_;
 
   // Custom Callback Queue
   private: ros::CallbackQueue queue_;
@@ -56,5 +69,10 @@ namespace epick_interface
   private: int connect_count_;
   private: void Connect();
   private: void Disconnect();
+
+  private: dynamic_reconfigure::Server<robotiq_epick_control::EpickConfig> param_server_;
+  private: dynamic_reconfigure::Server<robotiq_epick_control::EpickConfig>::CallbackType param_f_;
+
+  void paramCb(robotiq_epick_control::EpickConfig &config, uint32_t level);
   };
 }

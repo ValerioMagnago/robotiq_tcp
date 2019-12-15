@@ -3,6 +3,7 @@ uint8 gMOD
 uint8 gGTO 
 uint8 gSTA 
 uint8 gOBJ 
+uint8 gVAS
 uint8 gFLT
 uint8 gPR
 uint8 gPO

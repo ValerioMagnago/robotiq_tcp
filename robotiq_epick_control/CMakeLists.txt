@@ -7,6 +7,7 @@ add_compile_options(-std=c++17)
 
 
 find_package(catkin REQUIRED
+  dynamic_reconfigure
   message_generation
   roscpp
   rospy
@@ -20,9 +21,9 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-###################################
-## catkin message generation     ##
-###################################
+################################################
+## Declare ROS messages, services and actions ##
+################################################
 add_message_files(
   FILES
   RobotiqVacuumGrippers_robot_input.msg
@@ -30,7 +31,17 @@ add_message_files(
 )
 
 catkin_python_setup()
-generate_messages()
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+################################################
+## Declare ROS dynamic reconfigure parameters ##
+################################################
+generate_dynamic_reconfigure_options(
+   cfg/Epick.cfg
+)
 
 ###################################
 ## catkin specific configuration ##

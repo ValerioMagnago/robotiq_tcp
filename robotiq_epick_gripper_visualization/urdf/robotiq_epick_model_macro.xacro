@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+ 
+  <xacro:include filename="$(find robotiq_epick_gripper_visualization)/urdf/robotiq_epick/robotiq_epick.gazebo.xacro"/>  
+
+  <xacro:property name="joint_lower_limit" value="0.0" />
+  <xacro:property name="joint_upper_limit" value="0.055" />
+
+  <xacro:macro name="epick_hand" params="hand_link_name robot_name">
+    <link name="${hand_link_name}">
+      <inertial>
+        <mass value="0.745" />
+        <origin xyz="0 0.0 0.055" rpy="0 0 0" />
+        <inertia ixx="0.003084" ixy="0.0" ixz="0.0" iyy="0.002999" iyz="0.0" izz="0.000546" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0.095" rpy="0 0 0"/>
+        <geometry>          
+          <mesh filename="package://robotiq_epick_gripper_visualization/meshes/visual/robotiq_epick.dae" scale="0.001 0.001 0.001"/>          
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1"/>
+        </material>        
+      </visual>
+      <visual>        
+        <origin xyz="0 0 ${0.008+0.095}" rpy="0 0 0"/>
+        <geometry>          
+          <cylinder radius="0.006" length="0.016"/>
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1"/>
+        </material>        
+      </visual>      
+      <collision>
+        <!-- -0.095 + 0.102/2 = -0.044-->
+        <origin xyz="0 0 ${-0.044+0.095}" rpy="0 0 0"/>
+        <geometry>          
+          <cylinder radius="0.044" length="0.102"/>
+        </geometry>       
+      </collision>      
+<!--       <collision>        
+        <origin xyz="0 0 ${0.008+0.095}" rpy="0 0 0"/>
+        <geometry>          
+          <cylinder radius="0.006" length="0.016"/>
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1"/>
+        </material>        
+      </collision>  -->     
+    </link>
+
+    <joint name="$hand__end_effector_joint" type="fixed">
+      <parent link="${hand_link_name}"/>
+      <child link="epick_end_effector"/>
+      <origin xyz="0 0 ${0.017+0.095}" rpy="0 0 0"/>      
+    </joint>
+
+    <link name="epick_end_effector">
+      <gravity>0</gravity>
+      <visual>
+        <origin rpy="0 0 0.005" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.024" length="0.005"/>          
+        </geometry>
+        <!-- <material name="transparent">
+          <color rgba="0 0 0 0"/>
+        </material> -->
+      </visual>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="0.0001"/>
+        <inertia ixx="1e-08" ixy="0" ixz="0" iyy="1e-08" iyz="0" izz="1e-08"/>
+      </inertial>
+    </link>
+
+    <xacro:epick_hand_gazebo robot_name="${robot_name}" />    
+  </xacro:macro>
+
+</robot>

@@ -50,8 +50,8 @@ RobotiqEpickTcpClient::GripperInput RobotiqEpickTcpClient::readInputs() const
   input.gMOD = (map[0] >> 0x1) & 0x3;
   input.gGTO = (map[0] >> 0x3) & 0x1;
   input.gSTA = (map[0] >> 0x4) & 0x3;
-  input.gOBJ = (map[0] >> 0x6) & 0x3;
-  // map[1] is reserved by the protocol
+  input.gOBJ = (map[0] >> 0x6) & 0x3;    
+  input.gVAS = map[1] & 0x3;
   input.gFLT = map[2] & 0xF;
   input.gPR  = map[3];
   input.gPO  = map[4];
