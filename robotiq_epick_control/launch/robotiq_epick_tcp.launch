@@ -1,0 +1,13 @@
+<launch>
+  <arg name="gripper_name" default="epick" />
+  <arg name="activate" default="True" />
+
+
+  <group ns="epick"> 
+  <node pkg="robotiq_epick_control" type="robotiq_epick_tcp_node" name="robotiq_epick_driver" output="screen">
+      <param name="activate" type="bool" value="$(arg activate)" />
+    </node>
+
+  <node pkg="robotiq_epick_control" type="robotiq_epick_server_node" name="robotiq_epick_server" output="screen"/>
+</group>
+</launch>

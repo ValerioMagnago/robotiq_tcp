@@ -23,9 +23,9 @@
         </material>        
       </visual>
       <visual>        
-        <origin xyz="0 0 ${0.008+0.095}" rpy="0 0 0"/>
+        <origin xyz="0 0 ${0.015+0.095}" rpy="0 0 0"/>
         <geometry>          
-          <cylinder radius="0.006" length="0.016"/>
+          <cylinder radius="0.006" length="0.03"/>
         </geometry>
         <material name="">
           <color rgba="1 1 1 1"/>
@@ -33,9 +33,9 @@
       </visual>      
       <collision>
         <!-- -0.095 + 0.102/2 = -0.044-->
-        <origin xyz="0 0 ${-0.044+0.095}" rpy="0 0 0"/>
+        <origin xyz="0 0 ${-0.044+0.095+0.014}" rpy="0 0 0"/>
         <geometry>          
-          <cylinder radius="0.044" length="0.102"/>
+          <cylinder radius="0.044" length="0.13"/>
         </geometry>       
       </collision>      
 <!--       <collision>        
@@ -52,7 +52,7 @@
     <joint name="$hand__end_effector_joint" type="fixed">
       <parent link="${hand_link_name}"/>
       <child link="epick_end_effector"/>
-      <origin xyz="0 0 ${0.017+0.095}" rpy="0 0 0"/>      
+      <origin xyz="0 0 ${0.13}" rpy="0 0 0"/>      
     </joint>
 
     <link name="epick_end_effector">
@@ -60,7 +60,7 @@
       <visual>
         <origin rpy="0 0 0.005" xyz="0 0 0"/>
         <geometry>
-          <cylinder radius="0.024" length="0.005"/>          
+          <cylinder radius="0.0225" length="0.01"/>          
         </geometry>
         <!-- <material name="transparent">
           <color rgba="0 0 0 0"/>
