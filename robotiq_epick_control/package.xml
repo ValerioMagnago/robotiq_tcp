@@ -5,7 +5,9 @@
   <description>Package to control the vacuum grippers (currently the EPick and AirPick) from Robotiq inc.</description>
 
   <author>Valerio Magnago</author>
+  <author>Martin Stimpfl</author>
   <maintainer email="valerio.magnago@fraunhofer.it">Valerio Magnago</maintainer>
+  <maintainer email="martin.stimpfl@fraunhofer.it">Valerio Magnago</maintainer>  
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
