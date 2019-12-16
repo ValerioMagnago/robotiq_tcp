@@ -91,10 +91,10 @@ namespace epick_interface
       ROS_WARN("Need to reset the gripper before grasping!");
       gripper_.reset();
 
-      if(!gripper_.activate(ros::Duration(1))){
-        ROS_WARN("Impossible to activate the gripper!!");
-        return false;
-      }
+      //if(!gripper_.activate(ros::Duration(1))){
+      //  ROS_WARN("Impossible to activate the gripper!!");
+      //  return false;
+      //}
     }
 
     ROS_INFO("vacuum_gripper gripping");
@@ -109,10 +109,10 @@ namespace epick_interface
       ROS_WARN("Need to reset the gripper before dropping!");
       gripper_.reset();
 
-      if(!gripper_.activate(ros::Duration(1))){
-        ROS_WARN("Impossible to activate the gripper!!");
-        return false;
-      }
+      //if(!gripper_.activate(ros::Duration(1))){
+      //  ROS_WARN("Impossible to activate the gripper!!");
+      //  return false;
+      //}
     }
 
     ROS_INFO("vacuum_gripper dropping");
@@ -136,6 +136,10 @@ namespace epick_interface
     ros::Rate r(30);
     while (nh_.ok()){
       r.sleep();
+      if(!gripper_.isReady()){
+        gripper_.activate(ros::Duration(1));
+        continue;
+      }
       if(static_cast<uint8_t>(gripper_.getFaultStatus())>=0xA){
         // Major faults (0xA <= gFLT <= 0xF)
         switch(gripper_.getFaultStatus()){
@@ -155,6 +159,7 @@ namespace epick_interface
         }
         // Reset is required
         gripper_.reset();
+        ros::spinOnce();
         continue;
       }
 
@@ -168,10 +173,27 @@ namespace epick_interface
           ROS_WARN_STREAM("Stalling Epick Minor faults: \n\t No communication during at least 1 second.");
           break;
         }
+        ros::spinOnce();
         continue;
       }
 
 
+      if(static_cast<uint8_t>(gripper_.getFaultStatus())>0x0){
+        switch(gripper_.getFaultStatus())
+          {
+          case EpickGripper::FaultStatus::GRIPPING_TIMEOUT:
+            ROS_WARN("Gripping timeout");
+            gripper_.reset();
+            break;
+
+
+          default:
+            ROS_WARN("Gripping error");
+            break;
+          }
+        ros::spinOnce();
+        continue;
+      }
       // No faults / Priority faults
       queue_.callAvailable(ros::WallDuration(timeout));
       ros::spinOnce(); // Needed to update grasping!!

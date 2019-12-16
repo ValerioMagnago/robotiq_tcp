@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 
   ros::init(argc, argv, "robotiq_epick_driver_node");
 
-  ros::NodeHandle nh ("~");
+  ros::NodeHandle nh ("");
 
   // Parameter names
   std::string ip;

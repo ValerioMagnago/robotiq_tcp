@@ -26,9 +26,9 @@ void RobotiqEpickTcpClient::writeOutputs(const GripperOutput& output)
             ((output.rGTO << 0x3) & 0x8) |
             ((output.rATR << 0x4) & 0x10));
   // registers 1 & 2 reserved by Robotiq
-  map[3] = output.rPR & 0xFF00;
-  map[4] = output.rSP & 0xFF00;
-  map[5] = output.rFR & 0xFF00;
+  map[3] = output.rPR;
+  map[4] = output.rSP;
+  map[5] = output.rFR;
 
   if(manager_.write<6, 0>(map) == -1){
     ROS_WARN("FAILED TO WRITE");
@@ -50,7 +50,7 @@ RobotiqEpickTcpClient::GripperInput RobotiqEpickTcpClient::readInputs() const
   input.gMOD = (map[0] >> 0x1) & 0x3;
   input.gGTO = (map[0] >> 0x3) & 0x1;
   input.gSTA = (map[0] >> 0x4) & 0x3;
-  input.gOBJ = (map[0] >> 0x6) & 0x3;    
+  input.gOBJ = (map[0] >> 0x6) & 0x3;
   input.gVAS = map[1] & 0x3;
   input.gFLT = map[2] & 0xF;
   input.gPR  = map[3];

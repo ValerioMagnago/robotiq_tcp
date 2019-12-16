@@ -14,14 +14,14 @@ namespace epick_interface
   }
 
   inline uint8_t toUint8(float value){
-    static_cast<uint8_t>(round(clip(value, 0., 255.)));
+    return static_cast<uint8_t>(clip(round(value), 0., 255.));
   }
 
   inline uint8_t kpaToUint8(const float& relative_KPa){
-    return toUint8(relative_KPa + 100);
+    return toUint8(relative_KPa + 100.);
   }
 
-  inline float uintToKpa(const uint8_t gP){    
+  inline float uintToKpa(const uint8_t gP){
     return static_cast<float>(gP - 100); // KPa
   }
 
@@ -143,6 +143,7 @@ namespace epick_interface
   {
     GripperOutput cmd;
     cmd.rACT = 0;
+    cmd.rGTO = 0;
     cmd_pub_.publish(cmd);
     return;
   }
@@ -152,10 +153,10 @@ namespace epick_interface
     GripperOutput cmd;
     cmd.rACT = 1;
     cmd.rMOD = 0;
-    cmd.rGTO = 1;
+    cmd.rGTO = 0;
     cmd.rPR = 0;
-    cmd.rSP = 150;
-    cmd.rFR = 50;
+    cmd.rSP = 0;
+    cmd.rFR = 0;
     cmd_pub_.publish(cmd);
     ros::Rate r(30);
     ros::Time start_time = ros::Time::now();
@@ -167,6 +168,7 @@ namespace epick_interface
       if(isReady()){
         return true;
       }
+      ros::spinOnce();
       r.sleep();
     }
     return false;
@@ -205,20 +207,25 @@ namespace epick_interface
   }
 
   bool EpickGripper::goTo(const float& max_press_kpa, const float& action_timeout_sec,
-                  const float& min_press_kpa, const bool block, const ros::Duration& timeout){
+                  const float& min_press_kpa, const bool block, const ros::Duration& timeout
+                   ){
     // REGULATE VACUUM PRESSURE REQUEST
     const float staurated_min = std::min(min_press_kpa, 0.f);
     GripperOutput cmd;
     cmd.rACT = 1;
+    cmd.rMOD = 1;
     cmd.rGTO = 1;
     cmd.rPR = kpaToUint8(max_press_kpa);
     cmd.rSP = secToUint8(action_timeout_sec);
     cmd.rFR = kpaToUint8(staurated_min);
+    //cmd.rATR = open_valve_;
     cmd_pub_.publish(cmd);
+
+    ROS_WARN_STREAM("GRIP pressure uint  " << static_cast<int>(cmd.rPR));
     ros::Duration(0.1).sleep();
 
     if(block){
-      if(waitUntilMoving(timeout)){
+      if(!waitUntilMoving(timeout)){
           return false;
       }
       return waitUntilStopped(timeout);
@@ -255,11 +262,12 @@ namespace epick_interface
                   const float& min_press_kpa, const bool block, const ros::Duration& timeout)
   {
     if(!isReady()){
-      ROS_WARN("Impossible to actuate epick while it is not in ready state!");
+     ROS_WARN("Impossible to actuate epick while it is not in ready state!");
       return false;
     }
     if(isClosed())
       return true;
+    ROS_WARN_STREAM("GRIP pressure  " << max_press_kpa);
     float gripping_press = std::min(-10.f, max_press_kpa); // we need negative pressure to grasp
     return goTo(gripping_press, action_timeout_sec, min_press_kpa, block, timeout);
   }

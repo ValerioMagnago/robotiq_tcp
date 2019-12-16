@@ -9,7 +9,7 @@
 #include <exception>
 #include <ros/ros.h>
 
-#define FIRST_IMPLEMENTATION
+//#define FIRST_IMPLEMENTATION
 
 namespace robotiq_modbus_tcp
 {
